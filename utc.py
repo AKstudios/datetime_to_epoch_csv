@@ -4,7 +4,7 @@
 # This is for processing HUD project's data files
 
 # Developed by Akram Ali
-# Updated on: 05/17/2019
+# Updated on: 05/22/2019
 
 # ===========================================================================
 # import libraries
@@ -88,9 +88,13 @@ for a in tqdm(range(len(indices))):
         pass
     else:
         b = indices[a]
-        utc = datetime.strptime(csv_data[b][0], '%Y-%m-%d %H:%M:%S').replace(tzinfo=dtz.timezone.utc)
+        try:
+            utc = datetime.strptime(csv_data[b][0],
+             '%Y-%m-%d %H:%M:%S').replace(tzinfo=dtz.timezone.utc)
+        except:
+            pass
         for n in range(points[a]+1):
-            epoch = utc.timestamp()     # this converts the datetime into epoch
+            epoch = int(utc.timestamp())     # this converts the datetime into epoch
             csv_data[b][0] = epoch
             utc += timedelta(seconds=60)    # increment timestamp by 1 minute
             b += 1
